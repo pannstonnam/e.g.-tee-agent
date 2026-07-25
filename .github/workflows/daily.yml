@@ -1,0 +1,31 @@
+name: Tee Agent Daily Run
+
+on:
+  schedule:
+    # cron uses UTC time. '0 2 * * *' = 02:00 UTC = 09:00 Bangkok time (UTC+7), every day
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    # Adds a manual "Run workflow" button in the Actions tab, for testing anytime
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Tee Agent
+        run: python tee_agent.py
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
