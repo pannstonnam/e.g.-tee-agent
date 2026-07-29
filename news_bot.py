@@ -30,6 +30,12 @@ This digest is general-purpose. It is not written for any single AI, agent, or t
 write it so any AI system could read this file with zero other context and have everything it
 needs to run its own independent analysis.
 
+SEARCH BUDGET — Be economical with search calls. Do not run a separate search for every single
+candidate stock. Start with 1-2 broad searches against Investing.com's Stock Markets news page to
+identify the day's biggest stories, then run only as many additional targeted searches as needed
+to fill in missing numbers (aim for roughly 5-8 total searches for this whole task, not one per
+stock). Prioritize breadth of real information over exhaustiveness.
+
 Requirements:
 
 0. QUICK DIGEST CARD — Before anything else, output a short section wrapped EXACTLY like this
@@ -46,11 +52,11 @@ Requirements:
 📊 Market: Dow [+/-X%], S&P 500 [+/-X%], Nasdaq [+/-X%] — [one-sentence dominant macro theme]
 ===QUICK_DIGEST_END===
 
-1. COVERAGE — Do not stop at an arbitrary minimum. Continue covering every company with a
-   distinct, substantive news story from that day's Investing.com Stock Markets coverage. On a
-   typical active trading day this realistically means 20-30+ companies; on a quiet day it may be
-   fewer. Report however many genuine stories actually exist — never pad the list with filler or
-   repeat a company just to inflate the count, and never omit a real story just to keep it short.
+1. COVERAGE — Cover the 10-12 most significant companies with real, substantive news from that
+   day's Investing.com Stock Markets coverage — prioritize the biggest/most market-moving stories
+   rather than trying to be exhaustive. Report however many genuine stories you found within your
+   search budget; never pad the list with filler just to hit a number, and never fabricate a story
+   to fill a gap.
 
 2. ORGANIZATION — Group companies under sector headings: Technology, Financials, Healthcare,
    Energy, Consumer, Industrials, Communications, Other. (Skip any heading with zero stories.)
