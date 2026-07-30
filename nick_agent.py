@@ -21,7 +21,7 @@ from tee_agent import (
     read_knowledge_base,
 )
 
-DRIVE_FOLDER_NAME = "Nick_AI_Agent"
+DRIVE_FOLDER_NAME = "Nick_AI_Agent_v2"
 
 DEFAULT_PORTFOLIO = """# พอร์ตโฟลิโอเริ่มต้น
 - เงินสด: 100%
