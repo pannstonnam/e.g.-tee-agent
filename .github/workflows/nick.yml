@@ -1,0 +1,29 @@
+name: Nick Agent Daily Run
+
+on:
+  schedule:
+    # 02:13 UTC = 09:13 Bangkok time — offset from :00 to avoid GitHub's
+    # high-load top-of-hour delay, and staggered after Tee Agent's run
+    - cron: '13 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Nick Agent
+        run: python nick_agent.py
+        env:
+          GOOGLE_API_KEY: ${{ secrets.NICK_GOOGLE_API_KEY }}
+          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
