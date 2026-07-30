@@ -155,9 +155,11 @@ def extract_quick_digest(full_text):
 # Main
 # ------------------------------------------------------------
 def run_news_bot():
-    api_key = os.environ.get("GOOGLE_API_KEY")
+    # ใช้ API Key แยกต่างหาก (เช่นของ Nick) เพื่อไม่ให้แย่งโควต้ากับ tee_agent.py
+    # ถ้าไม่ได้ตั้ง NEWS_BOT_API_KEY ไว้ จะ fallback ไปใช้ GOOGLE_API_KEY ตัวเดิมแทน
+    api_key = os.environ.get("NEWS_BOT_API_KEY") or os.environ.get("GOOGLE_API_KEY")
     if not api_key:
-        raise RuntimeError("ไม่พบ GOOGLE_API_KEY ใน environment variables")
+        raise RuntimeError("ไม่พบ NEWS_BOT_API_KEY หรือ GOOGLE_API_KEY ใน environment variables")
 
     client = genai.Client(api_key=api_key)
     today_str = datetime.now(timezone.utc).strftime("%B %d, %Y")
