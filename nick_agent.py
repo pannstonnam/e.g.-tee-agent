@@ -12,7 +12,8 @@
 
 import os
 import requests
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from tee_agent import (
     get_drive_service,
@@ -107,7 +108,7 @@ def run_nick_agent():
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
         raise RuntimeError("ไม่พบ GOOGLE_API_KEY ใน environment variables")
-    genai.configure(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
     drive_service = get_drive_service()
     base_folder_id = find_or_create_folder(drive_service, DRIVE_FOLDER_NAME)
@@ -143,13 +144,14 @@ def run_nick_agent():
     {knowledge}
     """
 
-    model = genai.GenerativeModel(
-        model_name="gemini-flash-latest",
-        system_instruction=SYSTEM_INSTRUCTION
-    )
-
     print("🤖 พี่นิกกำลังอ่านข้อมูลและวิเคราะห์หุ้นสักครู่...")
-    response = model.generate_content(user_prompt)
+    response = client.models.generate_content(
+        model="gemini-flash-latest",
+        contents=user_prompt,
+        config=types.GenerateContentConfig(
+            system_instruction=SYSTEM_INSTRUCTION
+        ),
+    )
 
     print("\n" + "=" * 60)
     print("     ผลการวิเคราะห์จากพี่นิก")
