@@ -11,9 +11,10 @@
 # ============================================================
 
 import os
+import time
 import requests
 from google import genai
-from google.genai import types
+from google.genai import types, errors
 
 from tee_agent import (
     get_drive_service,
@@ -26,6 +27,8 @@ from tee_agent import (
 
 DRIVE_FOLDER_NAME = "Nick_AI_Agent_v3"
 TELEGRAM_MAX_LEN = 4096  # Telegram จำกัดความยาวข้อความต่อ 1 ครั้งไว้ที่ 4096 ตัวอักษร
+MAX_RETRIES = 5  # จำนวนครั้งที่ลองใหม่เมื่อโมเดลตอบ 503/overload ชั่วคราว
+INITIAL_BACKOFF_SECONDS = 20  # หน่วงเวลาก่อนลองใหม่ครั้งแรก แล้วเพิ่มเป็น 2 เท่าทุกครั้ง
 
 DEFAULT_PORTFOLIO = """# พอร์ตโฟลิโอเริ่มต้น
 - เงินสด: 100%
@@ -104,6 +107,32 @@ def send_telegram_message(text: str) -> None:
                 print(f"❌ ส่งข้อความ Telegram ไม่สำเร็จ: {e2}")
 
 
+def generate_with_retry(client: "genai.Client", user_prompt: str):
+    """เรียก Gemini API พร้อม retry แบบ exponential backoff
+    เผื่อกรณีโมเดลตอบ 503 UNAVAILABLE เพราะมีคนใช้งานเยอะชั่วคราว
+    (SDK มี retry ในตัวอยู่แล้ว แต่ถ้าโดนหนักจริงๆ อาจไม่พอ จึงเผื่อรอบเพิ่มตรงนี้)
+    """
+    delay = INITIAL_BACKOFF_SECONDS
+    last_error = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            return client.models.generate_content(
+                model="gemini-flash-latest",
+                contents=user_prompt,
+                config=types.GenerateContentConfig(
+                    system_instruction=SYSTEM_INSTRUCTION
+                ),
+            )
+        except errors.ServerError as e:
+            last_error = e
+            print(f"⚠️ โมเดลตอบ ServerError (ครั้งที่ {attempt}/{MAX_RETRIES}): {e}")
+            if attempt < MAX_RETRIES:
+                print(f"   รอ {delay} วินาทีก่อนลองใหม่...")
+                time.sleep(delay)
+                delay *= 2
+    raise last_error
+
+
 def run_nick_agent():
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
@@ -145,13 +174,7 @@ def run_nick_agent():
     """
 
     print("🤖 พี่นิกกำลังอ่านข้อมูลและวิเคราะห์หุ้นสักครู่...")
-    response = client.models.generate_content(
-        model="gemini-flash-latest",
-        contents=user_prompt,
-        config=types.GenerateContentConfig(
-            system_instruction=SYSTEM_INSTRUCTION
-        ),
-    )
+    response = generate_with_retry(client, user_prompt)
 
     print("\n" + "=" * 60)
     print("     ผลการวิเคราะห์จากพี่นิก")
@@ -167,4 +190,10 @@ def run_nick_agent():
 
 
 if __name__ == "__main__":
-    run_nick_agent()
+    try:
+        run_nick_agent()
+    except Exception as e:
+        failure_message = f"❌ Nick Agent รันไม่สำเร็จวันนี้: {e}"
+        print(failure_message)
+        send_telegram_message(failure_message)
+        raise
