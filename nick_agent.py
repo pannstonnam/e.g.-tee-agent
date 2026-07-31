@@ -3,6 +3,7 @@
 #  ปรับจาก Colab (drive.mount) ให้รันบน GitHub Actions:
 #    - ใช้ Google Drive Service Account แทน drive.mount()
 #    - อ่าน API Key จาก environment variable แทน getpass()/userdata
+#    - ส่งสรุปผลการรันเข้า Telegram ทุกครั้งที่รันเสร็จ
 #  ไฟล์ทั้งหมด (portfolio.md, mistakes.md, knowledge/) เก็บใน
 #  Google Drive โฟลเดอร์ "Nick_AI_Agent" เพื่อให้ข้อมูลอยู่ข้ามรอบการรัน
 #
@@ -10,6 +11,7 @@
 # ============================================================
 
 import os
+import requests
 import google.generativeai as genai
 
 from tee_agent import (
@@ -22,6 +24,7 @@ from tee_agent import (
 )
 
 DRIVE_FOLDER_NAME = "Nick_AI_Agent_v3"
+TELEGRAM_MAX_LEN = 4096  # Telegram จำกัดความยาวข้อความต่อ 1 ครั้งไว้ที่ 4096 ตัวอักษร
 
 DEFAULT_PORTFOLIO = """# พอร์ตโฟลิโอเริ่มต้น
 - เงินสด: 100%
@@ -53,6 +56,51 @@ SYSTEM_INSTRUCTION = """
 - # Thesis & Q-Condition ของหุ้นแต่ละตัว
 - # Watchlist ที่กำลังเฝ้าดู
 """
+
+
+def send_telegram_message(text: str) -> None:
+    """ส่งข้อความสรุปผลการรันเข้า Telegram ผ่าน Bot API
+
+    ต้องตั้งค่า environment variables (แนะนำให้เก็บเป็น GitHub Secrets):
+      - TELEGRAM_BOT_TOKEN : token ของบอทที่ได้จาก BotFather
+      - TELEGRAM_CHAT_ID   : chat id ปลายทาง (ห้อง/กลุ่ม/ผู้ใช้ที่จะรับข้อความ)
+    """
+    bot_token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+
+    if not bot_token or not chat_id:
+        print("⚠️ ไม่พบ TELEGRAM_BOT_TOKEN หรือ TELEGRAM_CHAT_ID จึงข้ามการส่ง Telegram")
+        return
+
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+
+    # Telegram จำกัดความยาวข้อความไว้ที่ 4096 ตัวอักษร ถ้ายาวเกินให้แบ่งส่งเป็นหลายข้อความ
+    chunks = [
+        text[i:i + TELEGRAM_MAX_LEN] for i in range(0, len(text), TELEGRAM_MAX_LEN)
+    ] or [text]
+
+    for idx, chunk in enumerate(chunks, start=1):
+        payload = {
+            "chat_id": chat_id,
+            "text": chunk,
+            "parse_mode": "Markdown",
+            "disable_web_page_preview": True,
+        }
+        try:
+            resp = requests.post(url, json=payload, timeout=30)
+            resp.raise_for_status()
+            print(f"📨 ส่งข้อความ Telegram ส่วนที่ {idx}/{len(chunks)} สำเร็จ")
+        except requests.exceptions.RequestException as e:
+            # เผื่อกรณี Markdown ที่พี่นิกสร้างมี syntax ที่ Telegram parse ไม่ผ่าน
+            # ให้ลองส่งใหม่แบบ plain text แทน จะได้ไม่พลาดการแจ้งเตือน
+            print(f"⚠️ ส่งแบบ Markdown ไม่สำเร็จ ({e}) กำลังลองส่งแบบข้อความธรรมดา...")
+            try:
+                payload.pop("parse_mode", None)
+                resp = requests.post(url, json=payload, timeout=30)
+                resp.raise_for_status()
+                print(f"📨 ส่งข้อความ Telegram ส่วนที่ {idx}/{len(chunks)} สำเร็จ (plain text)")
+            except requests.exceptions.RequestException as e2:
+                print(f"❌ ส่งข้อความ Telegram ไม่สำเร็จ: {e2}")
 
 
 def run_nick_agent():
@@ -110,6 +158,10 @@ def run_nick_agent():
 
     write_file_text(drive_service, "portfolio.md", base_folder_id, response.text)
     print(f"\n💾 บันทึกสถานะพอร์ตลง Google Drive/{DRIVE_FOLDER_NAME}/ เรียบร้อยแล้ว!")
+
+    # ส่งสรุปผลการรันรอบนี้เข้า Telegram
+    telegram_summary = f"🤖 รายงานพี่นิก ({DRIVE_FOLDER_NAME})\n\n{response.text}"
+    send_telegram_message(telegram_summary)
 
 
 if __name__ == "__main__":
