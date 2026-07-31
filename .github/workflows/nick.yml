@@ -1,14 +1,13 @@
-name: Nick Agent Daily Run
+name: Nick AI Agent
 
 on:
   schedule:
-    # 02:13 UTC = 09:13 Bangkok time — offset from :00 to avoid GitHub's
-    # high-load top-of-hour delay, and staggered after Tee Agent's run
-    - cron: '13 2 * * *'
-  workflow_dispatch:
+    # 18:00 น. เวลาไทย (UTC+7) = 11:00 UTC ทุกวัน
+    - cron: '0 11 * * *'
+  workflow_dispatch:  # ให้กดรันเองได้จากแท็บ Actions ด้วย
 
 jobs:
-  run-agent:
+  run-nick-agent:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -20,10 +19,16 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run Nick Agent
-        run: python nick_agent.py
         env:
-          GOOGLE_API_KEY: ${{ secrets.NICK_GOOGLE_API_KEY }}
-          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # ใส่ secret ที่ tee_agent.py ใช้สำหรับ Google Drive Service Account
+          # ที่นี่ด้วย (ชื่อตัวแปรขึ้นกับโค้ดใน tee_agent.py ของคุณ) เช่น:
+          # GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: python nick_agent.py
