@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Portfolio Dashboard</title>
+<style>
+  :root {
+    --bg: #0f1115; --card: #1a1d24; --border: #2a2e37;
+    --text: #e8e9ec; --muted: #8b8f9a; --accent: #6ee7b7; --accent2: #93c5fd;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2rem 1.25rem; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.5rem; margin-bottom: 1.5rem;
+  }
+  .card h2 { margin-top: 0; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; }
+  .stat-row { display: flex; gap: 1.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; }
+  .stat .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  .stat .value { font-size: 1.4rem; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; font-size: 0.78rem; text-transform: uppercase; }
+  .updated { color: var(--muted); font-size: 0.78rem; margin-top: 1rem; margin-bottom: 0; }
+  .empty { color: var(--muted); font-style: italic; }
+  .markdown-block {
+    white-space: pre-wrap; word-wrap: break-word; font-family: inherit;
+    font-size: 0.88rem; line-height: 1.6; color: var(--text); margin: 0;
+  }
+  footer { text-align: center; color: var(--muted); font-size: 0.75rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>📊 AI Portfolio Dashboard</h1>
+    <p class="subtitle">สร้างอัตโนมัติทุกวันโดย GitHub Actions — อัปเดตล่าสุด 2026-08-02 16:38 UTC</p>
+
+    <div class="card">
+      <h2>🤖 คุณตี๋ <span style="color:var(--accent); font-size:0.7rem; font-weight:400;">ระยะสั้น 1-2 เดือน</span></h2>
+      
+    <div class="stat-row">
+      <div class="stat"><span class="label">เงินสด</span><span class="value">$10,023.05</span></div>
+      <div class="stat"><span class="label">จำนวนหุ้นที่ถือ</span><span class="value">5</span></div>
+    </div>
+    <table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Target</th><th>Cut Loss</th></tr></thead><tbody><tr><td>NVDA</td><td>100</td><td>$194.83</td><td>$235.0</td><td>$180.0</td></tr><tr><td>BAC</td><td>300</td><td>$62.05</td><td>$72.0</td><td>$57.5</td></tr><tr><td>AAPL</td><td>65</td><td>$308.63</td><td>$350.0</td><td>$288.0</td></tr><tr><td>DLR</td><td>100</td><td>$202.0</td><td>$235.0</td><td>$188.0</td></tr><tr><td>MSFT</td><td>25</td><td>$464.72</td><td>$540.0</td><td>$425.0</td></tr></tbody></table>
+    <p class="updated">อัปเดตล่าสุด: 2026-08-02T09:36:54.175856+00:00</p>
+    
+    </div>
+
+    <div class="card">
+      <h2>📈 Nick <span style="color:var(--accent2); font-size:0.7rem; font-weight:400;">Buy &amp; Hold ระยะยาว</span></h2>
+      <pre class="markdown-block">สวัสดีครับ ผม **Nick** ผู้จัดการกองทุนจำลองในแนวทางการลงทุนระยะยาวแบบ *Scale Economies Shared* และ *Buy and Hold* ครับ
+
+ก่อนเริ่มรายงานการวิเคราะห์ประจำสัปดาห์นี้ ผมได้ทบทวนบันทึกความผิดพลาด (`mistakes.md`: *Nick innovest*) เรียบร้อยแล้ว เพื่อเตือนสติตัวเองให้ยึดมั่นในหลักการ **&quot;Doing nothing most of the time&quot;** ไม่หวั่นไหวไปกับความผันผวนของราคาหุ้นในระยะสั้น ไม่วิ่งตามกระแสเก็งกำไรในหุ้น IPO หรือชิปเฉพาะทางที่มี Valuation ตึงตัวเกินไป (เช่น Cerebras ที่ซื้อขายสูงถึง 70x P/S) และมุ่งเน้นการเป็นเจ้าของธุรกิจที่มีป้อมปราการทางธุรกิจแข็งแกร่งพร้อมโมเดลประหยัดเชิงขนาดที่แบ่งปันให้แก่ลูกค้า
+
+จากการวิเคราะห์คลังความรู้อัปเดตล่าสุดประจำสัปดาห์นี้ (ข้อมูล ณ วันที่ 1 สิงหาคม 2026) ผมขอสรุปรายงานสถานะพอร์ตและการตัดสินใจดังนี้ครับ:
+
+---
+
+# รายงานพอร์ตปัจจุบัน (Current Portfolio Status)
+
+| ชื่อสินทรัพย์/หุ้น | สัดส่วน (%) | ราคาต้นทุนเฉลี่ย | ราคาปัจจุบัน | สถานะ |
+| :--- | :---: | :---: | :---: | :--- |
+| **NVIDIA Corporation (NVDA)** | 30.0% | $194.83 | $194.83 | ถือลงทุนระยะยาว (Core Holding) |
+| **Amazon.com, Inc. (AMZN)** | 25.0% | $186.00 | $186.00 | ถือลงทุนระยะยาว (Core Holding) |
+| **Taiwan Semiconductor Manufacturing (TSM)** | 20.0% | $175.00 | $175.00 | ถือลงทุนระยะยาว (Core Holding) |
+| **Microsoft Corporation (MSFT)** | 15.0% | $451.10 | $451.10 | ถือลงทุนระยะยาว (Core Holding) |
+| **เงินสด (Cash)** | 10.0% | - | - | ถือเงินสดสำรองตามกฎ (10%) |
+
+**สรุปสุขภาพพอร์ต:**
+พอร์ตการลงทุนถือครองหุ้นคุณภาพสูงจำนวน 4 ตัว (ตรงตามกฎเหล็ก 3-10 ตัว) และสัดส่วนเงินสดอยู่ที่ 10.0% (อยู่ในกรอบกฎเหล็ก 0% - 40%) โครงสร้างพอร์ตเน้นบริษัทที่เป็นผู้นำเชิงโครงสร้างในห่วงโซ่อุปทาน AI และระบบคลาวด์องค์กรระดับโลก
+
+---
+
+# การตัดสินใจในรอบนี้ (Action Taken)
+
+**การกระทำ:** **อยู่เฉยๆ และไม่ทำการซื้อขายใดๆ (Doing Nothing / Hold All Positions)**
+
+**เหตุผลย่อ:**
+การตัดสินใจที่ดีที่สุดในรอบนี้คือ **&quot;การอยู่เฉยๆ&quot;** ข้อมูลอัปเดตล่าสุด ณ วันที่ 1 สิงหาคม 2026 ยืนยันว่าปัจจัยพื้นฐานและตรรกะการเติบโตระยะยาวของหุ้นทั้ง 4 ตัวที่ถือครองอยู่นั้นสมบูรณ์แบบอย่างยิ่ง:
+
+1. **MSFT (ตรรกะการลงทุนได้รับการพิสูจน์แล้ว):** ผลประกอบการไตรมาส 4 ปีการเงิน 2026 ออกมาดีกว่าที่นักวิเคราะห์คาดการณ์ไว้ทั้งรายได้และกำไรต่อหุ้น โดยได้รับแรงหนุนจากการเร่งตัวของ Azure Cloud Services และผลิตภัณฑ์ Office ที่สำคัญที่สุด ผู้บริหารได้คงเป้าหมายงบลงทุน (Capex) สำหรับปี 2026 ไว้ตามเดิม ไม่ได้เพิ่มขึ้นจนบานปลายอย่างที่ตลาดกังวล ส่งผลให้ราคาหุ้นปรับตัวขึ้นถึง **+15.51%** ในรอบสัปดาห์ สู่ระดับ $451.10 สะท้อนว่าโครงข่ายการกระจายสินค้าเข้าสู่ลูกค้าองค์กร (Enterprise Distribution) และการสร้างรายได้จาก AI monetization ทำงานได้อย่างมีประสิทธิภาพ
+2. **NVDA:** ข้อมูลย้อนหลังและการวิเคราะห์อุตสาหกรรมชี้ชัดว่า NVDA ยังคงครองความเป็นผู้นำระบบ AI Compute แบบ Full-Stack กระแสเงินสดจากการดำเนินงานที่สูงถึง $48B, ธุรกิจ Networking ที่วิ่งด้วย Run Rate $60B ตลอดจนการรุกเข้าสู่ตลาด CPU ($20B) และ Sovereign Cloud ($30B) เป็นหลักฐานว่า NVDA ได้เปลี่ยนตัวเองจากผู้ขายชิปไปเป็นผู้กำหนดสถาปัตยกรรมศูนย์ข้อมูล AI ระดับโลก
+3. **AMZN:** AWS ส่งสัญญาณเร่งตัวอย่างต่อเนื่อง โดยชิป Trainium มียอดผูกพันล่วงหน้าสะสมเกิน $225B สะท้อนโมเดล *Scale Economies Shared* ที่ช่วยลดต้นทุนการประมวลผลให้แก่ลูกค้าอย่างยั่งยืน
+4. **TSM:** ยังคงเป็นผู้ผูกขาดการผลิตชิปขั้นสูง (&gt;90% Market Share) ที่ปราศจากทางเลือกอื่น การซื้อขายที่ P/E เพียง 25 เท่า และ PEG ต่ำกว่า 1.0 บนคาดการณ์การเติบโตของกำไร 30% ต่อปี ถือว่า Valuation มี Margin of Safety สูงมาก
+
+ไม่มีเงื่อนไขสั่งขาย (Q-Condition) ข้อใดถูกละเมิด และไม่มีหุ้นใหม่ใน Watchlist ที่มีระดับราคาดึงดูดใจพอจะมาทดแทนหุ้นหลักทั้ง 4 ตัว การคงเงินสดไว้ 10% ถือเป็นระดับที่เหมาะสมในการรองรับความผันผวน
+
+---
+
+# Thesis &amp; Q-Condition ของหุ้นแต่ละตัว
+
+### 1. NVIDIA Corporation (NVDA)
+* **Original Thesis 3 ข้อ:**
+  1. **Full-Stack Ecosystem Moat:** ไม่ได้ขายแค่ชิป GPU แต่ขายโซลูชันระบบครบวงจร (CUDA, NVLink, Networking run rate $60B) เกิด Network Effect และ Developer Lock-in ที่แข็งแกร่งที่สุดในอุตสาหกรรม
+  2. **High Return on Capital &amp; Cash Flow:** มีกระแสเงินสดจากการดำเนินงานสูงถึง $48B พร้อมโปรแกรมซื้อหุ้นคืน $80B มีอำนาจในการกำหนดราคาและประสิทธิภาพการใช้เงินทุนสูงมาก
+  3. **Scale Economies Shared in Compute:** การเร่งประสิทธิภาพต่อวัตต์และหน่วยความจำอย่างต่อเนื่อง ทำให้ต้นทุนต่อ Token ต่ำลงเรื่อยๆ ช่วยขยาย Total Addressable Market (TAM) ไปยัง Sovereign Cloud, Enterprise และ Physical AI (Robotics/Omniverse)
+* **Q-Condition (เงื่อนไขสั่งขาย):**
+  * ส่วนแบ่งตลาด (Market Share) ในฝั่งประมวลผล AI สูญเสียอย่างถาวรจนต่ำกว่า 50% ให้แก่ Custom ASICs หรือคู่แข่ง
+  * อัตรากำไรขั้นต้น (Gross Margin) ลดลงอย่างมีนัยสำคัญจนต่ำกว่า 55% สื่อถึงการสูญเสียอำนาจกำหนดราคาและกลายเป็นสินค้าโภคภัณฑ์
+
+### 2. Amazon.com, Inc. (AMZN)
+* **Original Thesis 3 ข้อ:**
+  1. **Prototypical Scale Economies Shared:** ต้นแบบโมเดลธุรกิจที่นำประหยัดเชิงขนาด (Scale) จาก AWS และ Retail ไปลดราคาและเพิ่มประสิทธิภาพให้ลูกค้า เกิดเป็น Flywheel ที่ดึงดูดลูกค้าและปริมาณการใช้งานใหม่ๆ อย่างไม่จบสิ้น
+  2. **Vertical Silicon Integration:** การพัฒนาชิปประมวลผลของตัวเองอย่าง Trainium และ Inferentia (มียอดผูกพัน &gt;$225B) ช่วยลดต้นทุนฮาร์ดแวร์ระยะยาวของ AWS เพิ่มอัตรากำไรและมอบทางเลือกที่คุ้มค่าให้แก่ลูกค้า
+  3. **Enterprise Cloud Platform Standard:** AWS เป็นฐานรากสำคัญของข้อมูลองค์กร ทำให้ได้ประโยชน์โดยตรงจากการเปลี่ยนผ่านเข้าสู่ยุค AI Workflow และ Agentic Applications
+* **Q-Condition (เงื่อนไขสั่งขาย):**
+  * AWS สูญเสียส่วนแบ่งทางการตลาดระบบคลาวด์อย่างต่อเนื่องติดต่อกันเกิน 8 ไตรมาส
+  * ผู้บริหารละทิ้งปรัชญา Scale Economies Shared โดยหันไปเพิ่มราคาเพื่อสร้างกำไรระยะสั้นจนกระทบความพึงพอใจและการยึดติดของลูกค้า
+
+### 3. Taiwan Semiconductor Manufacturing Co. (TSM)
+* **Original Thesis 3 ข้อ:**
+  1. **De Facto Foundry Monopoly:** ครอบครองส่วนแบ่งการผลิตชิปขั้นสูง (Leading-Edge Node) กว่า 90% ของโลก เป็นผูกขาดเชิงโครงสร้างที่ต้องใช้เงินทุนและเทคโนโลยีระดับสูงจนผู้เล่นรายอื่นเลียนแบบไม่ได้
+  2. **Shared Scale in Manufacturing:** เงินลงทุน CapEx ระดับมหาศาลทำให้เกิด Economy of Scale ในการผลิต ซึ่งถูกส่งผ่านเป็นต้นทุนต่อทรานซิสเตอร์ที่ถูกลงให้กับลูกค้ารายใหญ่ (NVDA, AAPL, AMD)
+  3. **Valuation Disconnect:** ซื้อขายที่ระดับ P/E เพียง 25 เท่า โดยมีอัตรา PEG ต่ำกว่า 1.0 บนคาดการณ์การเติบโตของกำไร 30% ต่อปี ซึ่งต่ำกว่าคุณค่าเชิงโครงสร้างที่แท้จริง
+* **Q-Condition (เงื่อนไขสั่งขาย):**
+  * พ่ายแพ้เทคโนโลยีการผลิตชิปขั้นสูง (Process Node Leadership) ให้แก่คู่แข่งอย่าง Intel หรือ Samsung ติดต่อกันเกิน 2 เจเนอเรชัน
+  * อัตรากำไรขั้นต้น (Gross Margin) ตกต่ำลงอย่างยั่งยืนจนต่ำกว่า 45%
+
+### 4. Microsoft Corporation (MSFT)
+* **Original Thesis 3 ข้อ:**
+  1. **Unrivaled Enterprise Distribution:** ฐานลูกค้าองค์กรผ่าน Office 365 และ Azure ที่แข็งแกร่งที่สุดในโลก ทำให้การปรับเพิ่มฟีเจอร์ AI (Copilot/Now Assist) ทำได้ทันทีผ่านช่องทางเดิมโดยมีต้นทุนการได้มาซึ่งลูกค้า (CAC) ต่ำมาก
+  2. **Massive AI Monetization Scale:** รายได้ที่เกี่ยวข้องกับ AI วิ่งด้วย Run Rate สูงถึง $37B แสดงถึงการประยุกต์ใช้งานจริงในเชิงพาณิชย์ที่ไม่ใช่แค่กระแสเก็งกำไร
+  3. **Reversion to the Mean Opportunity:** ราคาหุ้นซื้อขายในระดับ Forward P/E ที่น่าสนใจเมื่อเทียบกับค่าเฉลี่ยย้อนหลัง 10 ปีที่ 28-30 เท่า มอบ Margin of Safety ที่สูงสำหรับผู้ลงทุนระยะยาว
+* **Q-Condition (เงื่อนไขสั่งขาย):**
+  * อัตราการเติบโตของ Azure ต่ำกว่าคู่แข่งหลักในอุตสาหกรรมอย่างมีนัยสำคัญติดต่อกัน 4 ไตรมาส
+  * เกิดการยกเลิกใช้งาน (Churn) ของซอฟต์แวร์หลักในฝั่งองค์กรจากการถูก Disintermediate โดยโมเดล AI ภายนอกอย่างถาวร
+
+---
+
+# Watchlist ที่กำลังเฝ้าดู
+
+* **Micron Technology (MU):** การใช้สัญญา Strategic Customer Agreements (SCAs) ที่มีระดับราคาขั้นต่ำ (Price Floor) และไม่มี ceiling ร่วมกับอัตรากำไรขั้นต้นที่ยกระดับขึ้นสู่ 60% เริ่มเปลี่ยนมิติจากสินค้าโภคภัณฑ์ไปสู่สัญญาที่มีความเสถียร นอกจากนี้การตั้งอยู่ในสหรัฐฯ ช่วยลดความเสี่ยงด้านภาษีและภูมิรัฐศาสตร์ อย่างไรก็ตาม เรากำลังเฝ้ารอจังหวะราคาปรับฐานเข้าหาเส้นค่าเฉลี่ยเพื่อ Margin of Safety ที่สูงขึ้น
+* **ServiceNow (NOW):** เป็น System of Record สำคัญของกระบวนการทำงานในองค์กร มีอัตราการยึดติดสูง ปัจจุบันเทรดต่ำกว่า 20x FCF หากได้รับการพิสูจน์เรื่องการสร้างรายได้จาก AI Agent (Now Assist) เพิ่มเติม จะเป็นตัวเลือกซอฟต์แวร์ชั้นยอดในการเข้าสะสม
+* **Palantir Technologies (PLTR):** มี Ontology Layer ที่ช่วยปกป้องข้อมูลความลับขององค์กรและรัฐบาล ป้องกันไม่ให้ข้อมูลรั่วไหลสู่ LLMs ภายนอก เป็นโครงสร้างสำคัญในยุค Enterprise AI แต่ยังคงรอคอยระดับราคาที่มี Margin of Safety เหมาะสม
+* **Alphabet Inc. (GOOGL):** มีความครบวงจรตั้งแต่ชิป TPU, โมเดล Gemini, จนถึงคลาวด์และฐานผู้ใช้หลายพันล้านคน (Vertical Integration) ล่าสุดตลาดกังวลการปรับเพิ่มงบ CapEx ปี 2026 ขึ้นเป็น $195B-$205B ทำให้ราคาหุ้นปรับฐาน ถือเป็นตัวเลือกที่น่าจับตาอย่างใกล้ชิดหากราคาปรับตัวลงมาถึงระดับที่น่าดึงดูดใจ
+
+---
+
+*บทเรียนเตือนตัวเองจาก mistakes.md: &quot;การลงทุนไม่ใช่การคาดเดาความเคลื่อนไหวของราคาหุ้นในสัปดาห์หน้า แต่เป็นการร่วมเป็นเจ้าของธุรกิจที่มีโมเดล Scale Economies Shared และมีป้อมปราการทางธุรกิจขยายใหญ่ขึ้นตามกาลเวลา การอยู่เฉยๆ ในวันที่ตรรกะของบริษัทยังคงสมบูรณ์แบบ คือวิถีทางเดียวในการปล่อยให้ผลตอบแทนทบต้นทำงานได้อย่างเต็มประสิทธิภาพ&quot;*</pre>
+    </div>
+
+    <footer>Generated by GitHub Actions · ไม่ใช่คำแนะนำการลงทุน ใช้เพื่อการศึกษาเท่านั้น</footer>
+  </div>
+</body>
+</html>
