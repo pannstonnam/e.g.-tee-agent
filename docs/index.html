@@ -14,26 +14,36 @@
     margin: 0; padding: 2rem 1.25rem; background: var(--bg); color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
-  .wrap { max-width: 900px; margin: 0 auto; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
   h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
   .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media (max-width: 720px) {
+    .columns { grid-template-columns: 1fr; }
+  }
   .card {
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 1.5rem; margin-bottom: 1.5rem;
+    padding: 1.5rem;
   }
   .card h2 { margin-top: 0; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; }
   .stat-row { display: flex; gap: 1.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
   .stat { display: flex; flex-direction: column; }
   .stat .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
   .stat .value { font-size: 1.4rem; font-weight: 600; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-  th, td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); }
-  th { color: var(--muted); font-weight: 500; font-size: 0.78rem; text-transform: uppercase; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th, td { text-align: left; padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; font-size: 0.74rem; text-transform: uppercase; }
   .updated { color: var(--muted); font-size: 0.78rem; margin-top: 1rem; margin-bottom: 0; }
   .empty { color: var(--muted); font-style: italic; }
   .markdown-block {
     white-space: pre-wrap; word-wrap: break-word; font-family: inherit;
-    font-size: 0.88rem; line-height: 1.6; color: var(--text); margin: 0;
+    font-size: 0.85rem; line-height: 1.6; color: var(--text); margin: 0;
+    max-height: 600px; overflow-y: auto;
   }
   footer { text-align: center; color: var(--muted); font-size: 0.75rem; margin-top: 2rem; }
 </style>
@@ -41,23 +51,12 @@
 <body>
   <div class="wrap">
     <h1>📊 AI Portfolio Dashboard</h1>
-    <p class="subtitle">สร้างอัตโนมัติทุกวันโดย GitHub Actions — อัปเดตล่าสุด 2026-08-02 16:38 UTC</p>
+    <p class="subtitle">สร้างอัตโนมัติทุกวันโดย GitHub Actions — อัปเดตล่าสุด 2026-08-03 13:27 UTC</p>
 
-    <div class="card">
-      <h2>🤖 คุณตี๋ <span style="color:var(--accent); font-size:0.7rem; font-weight:400;">ระยะสั้น 1-2 เดือน</span></h2>
-      
-    <div class="stat-row">
-      <div class="stat"><span class="label">เงินสด</span><span class="value">$10,023.05</span></div>
-      <div class="stat"><span class="label">จำนวนหุ้นที่ถือ</span><span class="value">5</span></div>
-    </div>
-    <table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Target</th><th>Cut Loss</th></tr></thead><tbody><tr><td>NVDA</td><td>100</td><td>$194.83</td><td>$235.0</td><td>$180.0</td></tr><tr><td>BAC</td><td>300</td><td>$62.05</td><td>$72.0</td><td>$57.5</td></tr><tr><td>AAPL</td><td>65</td><td>$308.63</td><td>$350.0</td><td>$288.0</td></tr><tr><td>DLR</td><td>100</td><td>$202.0</td><td>$235.0</td><td>$188.0</td></tr><tr><td>MSFT</td><td>25</td><td>$464.72</td><td>$540.0</td><td>$425.0</td></tr></tbody></table>
-    <p class="updated">อัปเดตล่าสุด: 2026-08-02T09:36:54.175856+00:00</p>
-    
-    </div>
-
-    <div class="card">
-      <h2>📈 Nick <span style="color:var(--accent2); font-size:0.7rem; font-weight:400;">Buy &amp; Hold ระยะยาว</span></h2>
-      <pre class="markdown-block">สวัสดีครับ ผม **Nick** ผู้จัดการกองทุนจำลองในแนวทางการลงทุนระยะยาวแบบ *Scale Economies Shared* และ *Buy and Hold* ครับ
+    <div class="columns">
+      <div class="card">
+        <h2>📈 Nick <span style="color:var(--accent2); font-size:0.7rem; font-weight:400;">Buy &amp; Hold ระยะยาว</span></h2>
+        <pre class="markdown-block">สวัสดีครับ ผม **Nick** ผู้จัดการกองทุนจำลองในแนวทางการลงทุนระยะยาวแบบ *Scale Economies Shared* และ *Buy and Hold* ครับ
 
 ก่อนเริ่มรายงานการวิเคราะห์ประจำสัปดาห์นี้ ผมได้ทบทวนบันทึกความผิดพลาด (`mistakes.md`: *Nick innovest*) เรียบร้อยแล้ว เพื่อเตือนสติตัวเองให้ยึดมั่นในหลักการ **&quot;Doing nothing most of the time&quot;** ไม่หวั่นไหวไปกับความผันผวนของราคาหุ้นในระยะสั้น ไม่วิ่งตามกระแสเก็งกำไรในหุ้น IPO หรือชิปเฉพาะทางที่มี Valuation ตึงตัวเกินไป (เช่น Cerebras ที่ซื้อขายสูงถึง 70x P/S) และมุ่งเน้นการเป็นเจ้าของธุรกิจที่มีป้อมปราการทางธุรกิจแข็งแกร่งพร้อมโมเดลประหยัดเชิงขนาดที่แบ่งปันให้แก่ลูกค้า
 
@@ -146,6 +145,19 @@
 ---
 
 *บทเรียนเตือนตัวเองจาก mistakes.md: &quot;การลงทุนไม่ใช่การคาดเดาความเคลื่อนไหวของราคาหุ้นในสัปดาห์หน้า แต่เป็นการร่วมเป็นเจ้าของธุรกิจที่มีโมเดล Scale Economies Shared และมีป้อมปราการทางธุรกิจขยายใหญ่ขึ้นตามกาลเวลา การอยู่เฉยๆ ในวันที่ตรรกะของบริษัทยังคงสมบูรณ์แบบ คือวิถีทางเดียวในการปล่อยให้ผลตอบแทนทบต้นทำงานได้อย่างเต็มประสิทธิภาพ&quot;*</pre>
+      </div>
+
+      <div class="card">
+        <h2>🤖 คุณตี๋ <span style="color:var(--accent); font-size:0.7rem; font-weight:400;">ระยะสั้น 1-2 เดือน</span></h2>
+        
+    <div class="stat-row">
+      <div class="stat"><span class="label">เงินสด</span><span class="value">$10,023.05</span></div>
+      <div class="stat"><span class="label">จำนวนหุ้นที่ถือ</span><span class="value">5</span></div>
+    </div>
+    <table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Target</th><th>Cut Loss</th></tr></thead><tbody><tr><td>NVDA</td><td>100</td><td>$194.83</td><td>$235.0</td><td>$180.0</td></tr><tr><td>BAC</td><td>300</td><td>$62.05</td><td>$72.0</td><td>$57.5</td></tr><tr><td>AAPL</td><td>65</td><td>$308.63</td><td>$350.0</td><td>$288.0</td></tr><tr><td>DLR</td><td>100</td><td>$202.0</td><td>$235.0</td><td>$188.0</td></tr><tr><td>MSFT</td><td>25</td><td>$464.72</td><td>$540.0</td><td>$425.0</td></tr></tbody></table>
+    <p class="updated">อัปเดตล่าสุด: 2026-08-03T13:23:45.837520+00:00</p>
+    
+      </div>
     </div>
 
     <footer>Generated by GitHub Actions · ไม่ใช่คำแนะนำการลงทุน ใช้เพื่อการศึกษาเท่านั้น</footer>
