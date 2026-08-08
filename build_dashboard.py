@@ -32,13 +32,20 @@ def load_tee_portfolio(service):
 def load_nick_portfolio(service):
     try:
         base_id = find_or_create_folder(service, NICK_FOLDER)
-        file_id = find_file(service, "portfolio.md", base_id)
+        file_id = find_file(service, "portfolio.json", base_id)
         if not file_id:
             return None
-        return read_file_text(service, file_id)
+        return json.loads(read_file_text(service, file_id))
     except Exception as e:
         print(f"⚠️ อ่านพอร์ต Nick ไม่สำเร็จ: {e}")
         return None
+
+
+def render_thesis(thesis_list):
+    if not thesis_list:
+        return "-"
+    items = "".join(f"<li>{html.escape(str(t))}</li>" for t in thesis_list)
+    return f'<ul class="thesis-list">{items}</ul>'
 
 
 def render_tee_section(portfolio):
@@ -54,11 +61,55 @@ def render_tee_section(portfolio):
             f"<td>${html.escape(str(p.get('entry_price', '')))}</td>"
             f"<td>${html.escape(str(p.get('target_price', '')))}</td>"
             f"<td>${html.escape(str(p.get('cutloss_price', '')))}</td>"
+            f"<td>{render_thesis(p.get('thesis'))}</td>"
             "</tr>"
         )
     table = (
         "<table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th>"
-        "<th>Target</th><th>Cut Loss</th></tr></thead><tbody>"
+        "<th>Target</th><th>Cut Loss</th><th>Thesis</th></tr></thead><tbody>"
+        + (rows if rows else '<tr><td colspan="6">ไม่มีหุ้นที่ถืออยู่</td></tr>')
+        + "</tbody></table>"
+    )
+    cash = portfolio.get("cash", 0)
+    updated = portfolio.get("last_updated", "-")
+    try:
+        cash_fmt = f"${float(cash):,.2f}"
+    except (TypeError, ValueError):
+        cash_fmt = str(cash)
+    actions_th = portfolio.get("actions_taken_th", "")
+    reasoning_block = (
+        f'<div class="reasoning"><h3>เหตุผลการตัดสินใจล่าสุด</h3><p>{html.escape(actions_th)}</p></div>'
+        if actions_th else ""
+    )
+    return f"""
+    <div class="stat-row">
+      <div class="stat"><span class="label">เงินสด</span><span class="value">{cash_fmt}</span></div>
+      <div class="stat"><span class="label">จำนวนหุ้นที่ถือ</span><span class="value">{len(positions)}</span></div>
+    </div>
+    {table}
+    {reasoning_block}
+    <p class="updated">อัปเดตล่าสุด: {html.escape(str(updated))}</p>
+    """
+
+
+def render_nick_section(portfolio):
+    if not portfolio:
+        return '<p class="empty">ยังไม่มีข้อมูลพอร์ตของ Nick</p>'
+    positions = portfolio.get("positions", [])
+    rows = ""
+    for p in positions:
+        rows += (
+            "<tr>"
+            f"<td>{html.escape(str(p.get('symbol', '')))}</td>"
+            f"<td>{html.escape(str(p.get('qty', '')))}</td>"
+            f"<td>${html.escape(str(p.get('entry_price', '')))}</td>"
+            f"<td>{html.escape(str(p.get('q_condition', '')))}</td>"
+            f"<td>{render_thesis(p.get('thesis'))}</td>"
+            "</tr>"
+        )
+    table = (
+        "<table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th>"
+        "<th>Q-Condition</th><th>Thesis</th></tr></thead><tbody>"
         + (rows if rows else '<tr><td colspan="5">ไม่มีหุ้นที่ถืออยู่</td></tr>')
         + "</tbody></table>"
     )
@@ -68,23 +119,23 @@ def render_tee_section(portfolio):
         cash_fmt = f"${float(cash):,.2f}"
     except (TypeError, ValueError):
         cash_fmt = str(cash)
+    actions_th = portfolio.get("actions_taken_th", "")
+    reasoning_block = (
+        f'<div class="reasoning"><h3>เหตุผลการตัดสินใจล่าสุด</h3><p>{html.escape(actions_th)}</p></div>'
+        if actions_th else ""
+    )
     return f"""
     <div class="stat-row">
       <div class="stat"><span class="label">เงินสด</span><span class="value">{cash_fmt}</span></div>
       <div class="stat"><span class="label">จำนวนหุ้นที่ถือ</span><span class="value">{len(positions)}</span></div>
     </div>
     {table}
+    {reasoning_block}
     <p class="updated">อัปเดตล่าสุด: {html.escape(str(updated))}</p>
     """
 
 
-def render_nick_section(text):
-    if not text:
-        return '<p class="empty">ยังไม่มีข้อมูลพอร์ตของ Nick</p>'
-    return f'<pre class="markdown-block">{html.escape(text)}</pre>'
-
-
-def build_html(tee_portfolio, nick_text):
+def build_html(tee_portfolio, nick_portfolio):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     return f"""<!DOCTYPE html>
 <html lang="th">
@@ -128,6 +179,16 @@ def build_html(tee_portfolio, nick_text):
   th {{ color: var(--muted); font-weight: 500; font-size: 0.74rem; text-transform: uppercase; }}
   .updated {{ color: var(--muted); font-size: 0.78rem; margin-top: 1rem; margin-bottom: 0; }}
   .empty {{ color: var(--muted); font-style: italic; }}
+  .thesis-list {{ margin: 0; padding-left: 1.1rem; font-size: 0.8rem; color: var(--muted); }}
+  .thesis-list li {{ margin-bottom: 0.15rem; }}
+  .reasoning {{
+    margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border);
+  }}
+  .reasoning h3 {{
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em;
+    color: var(--muted); margin: 0 0 0.4rem 0; font-weight: 600;
+  }}
+  .reasoning p {{ margin: 0; font-size: 0.88rem; line-height: 1.6; }}
   .markdown-block {{
     white-space: pre-wrap; word-wrap: break-word; font-family: inherit;
     font-size: 0.85rem; line-height: 1.6; color: var(--text); margin: 0;
@@ -144,7 +205,7 @@ def build_html(tee_portfolio, nick_text):
     <div class="columns">
       <div class="card">
         <h2>📈 Nick <span style="color:var(--accent2); font-size:0.7rem; font-weight:400;">Buy &amp; Hold ระยะยาว</span></h2>
-        {render_nick_section(nick_text)}
+        {render_nick_section(nick_portfolio)}
       </div>
 
       <div class="card">
@@ -162,9 +223,9 @@ def build_html(tee_portfolio, nick_text):
 def main():
     drive_service = get_drive_service()
     tee_portfolio = load_tee_portfolio(drive_service)
-    nick_text = load_nick_portfolio(drive_service)
+    nick_portfolio = load_nick_portfolio(drive_service)
 
-    html_content = build_html(tee_portfolio, nick_text)
+    html_content = build_html(tee_portfolio, nick_portfolio)
 
     os.makedirs("docs", exist_ok=True)
     with open("docs/index.html", "w", encoding="utf-8") as f:
